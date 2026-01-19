@@ -10,23 +10,33 @@ import tools.jackson.databind.JsonNode;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1")
+@RequestMapping(path = "/api/players")
 public class PlayerController {
 
+    // This is how to get the environment variable
     @Value("${nba_stats_api_key}")
     private String NBA_API_KEY;
 
-    @GetMapping("/getleagues") //This handles http get requests
-    public String getLeagues(){
+    @GetMapping("/get-teams") //This handles http get requests
+    public String getTeams(){
         RestClient restClient = RestClient.builder()
-                .baseUrl("https://v1.basketball.api-sports.io")
+                .baseUrl("https://v2.nba.api-sports.io/")
                 .build();
 
         return restClient.get()
-                .uri("/leagues")
+                .uri("/teams?")
                 .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
                 .retrieve()
                 .body(String.class);
     }
+
+    @GetMapping("/")
+    public String getTeamsStatistics(){
+        return "";
+    }
+
+
+
+
 
 }
