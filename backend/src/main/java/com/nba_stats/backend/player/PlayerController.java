@@ -17,18 +17,18 @@ public class PlayerController {
     @Value("${nba_stats_api_key}")
     private String NBA_API_KEY;
 
-    @GetMapping("/get-teams") //This handles http get requests
-    public String getTeams(){
-        RestClient restClient = RestClient.builder()
-                .baseUrl("https://v2.nba.api-sports.io/")
-                .build();
-
-        return restClient.get()
-                .uri("/teams?")
-                .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
-                .retrieve()
-                .body(String.class);
-    }
+//    @GetMapping("/get-teams") //This handles http get requests
+//    public String getTeams(){
+//        RestClient restClient = RestClient.builder()
+//                .baseUrl("https://v2.nba.api-sports.io/")
+//                .build();
+//
+//        return restClient.get()
+//                .uri("/teams?")
+//                .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
+//                .retrieve()
+//                .body(String.class);
+//    }
 
     @GetMapping("/")
     public String getTeamsStatistics(){
