@@ -1,6 +1,7 @@
 package com.nba_stats.backend.teams;
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class TeamController {
     private String NBA_API_KEY;
 
 
-    // if I want to load data only once we use PostConstruct
+    // If I want to load data only once we use PostConstruct
 
     @GetMapping("/get_teams")
     public List<TeamModel> getTeams(){
@@ -25,13 +26,17 @@ public class TeamController {
                 .baseUrl("https://v2.nba.api-sports.io/")
                 .build();
 
-        TeamModel allTeams =  restClient.get()
-                .uri("/teams?")
+        TeamResponseWrapper allTeams =  restClient.get()
+                .uri("/teams?league=standard")
                 .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
                 .retrieve()
-                .body(TeamModel.class);
+                .body(TeamResponseWrapper.class);
 
-        return allTeams;
+        ModelMapper modelMapper = new ModelMapper();
+
+        return allTeams.getResponse().stream()
+                .map(dto -> modelMapper.map(dto, TeamModel.class))
+                .toList();
     }
 
 }

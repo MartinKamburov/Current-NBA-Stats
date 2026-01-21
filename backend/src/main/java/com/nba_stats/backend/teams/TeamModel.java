@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// This is the entity for the information we input into the database
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,15 +28,15 @@ public class TeamModel {
     @Column(name = "code")
     private String code;
 
-    @Column(name = "league")
-    private String league;
+    @Column(name = "city")
+    private String city;
 
-    @Column(name = "conference")
-    private String conference;
+    @Column(name = "logo")
+    private String logo;
 
-    @Column(name = "division")
-    private String division;
+    @Column(name = "allstar")
+    private Boolean allStar;
 
-    @Column(name = "search")
-    private String search;
+    @Column(name = "nbafranchise")
+    private Boolean nbaFranchise;
 }
