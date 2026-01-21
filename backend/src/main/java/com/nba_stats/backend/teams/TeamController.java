@@ -17,26 +17,22 @@ public class TeamController {
     @Value("${nba_stats_api_key}")
     private String NBA_API_KEY;
 
+    private final TeamRepository teamRepository;
+
+    public TeamController(TeamRepository teamRepository){
+        this.teamRepository = teamRepository;
+    }
+
 
     // If I want to load data only once we use PostConstruct
 
     @GetMapping("/get_teams")
     public List<TeamModel> getTeams(){
-        RestClient restClient = RestClient.builder()
-                .baseUrl("https://v2.nba.api-sports.io/")
-                .build();
-
-        TeamResponseWrapper allTeams =  restClient.get()
-                .uri("/teams?league=standard")
-                .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
-                .retrieve()
-                .body(TeamResponseWrapper.class);
-
-        ModelMapper modelMapper = new ModelMapper();
-
-        return allTeams.getResponse().stream()
-                .map(dto -> modelMapper.map(dto, TeamModel.class))
-                .toList();
+        return teamRepository.findAll();
     }
+
+
+
+
 
 }
