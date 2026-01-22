@@ -20,9 +20,11 @@ public class DataLoader implements CommandLineRunner {
 
     private final TeamRepository teamRepository;
 
+
     public DataLoader(TeamRepository teamRepository){
         this.teamRepository = teamRepository;
     }
+
 
     @Override
     public void run(String... args) throws Exception {

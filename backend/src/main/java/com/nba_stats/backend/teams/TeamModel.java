@@ -1,14 +1,14 @@
 package com.nba_stats.backend.teams;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.nba_stats.backend.player.PlayerModel;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 // This is the entity for the information we input into the database
 
@@ -21,6 +21,9 @@ public class TeamModel {
     @Id
     @Column(name = "id")
     private int id;
+
+    @OneToMany(mappedBy="team")
+    private List<PlayerModel> players;
 
     @Column(name = "name")
     private String name;
