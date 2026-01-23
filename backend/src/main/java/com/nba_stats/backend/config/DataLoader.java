@@ -54,5 +54,15 @@ public class DataLoader implements CommandLineRunner {
 
             teamRepository.saveAll(listOfTeams);
         }
+
+
+
+
+        //I need to grab all the nba teams and in the players get request, so I would swap out the team id for each team, and only include ones that are in the nba.
+        //I would then map all the players information into the players table. Finally, after that I can grab each player's statistics and input them into the database. *Remember I can only take 100 queries per day*
+
+        //Instead of loading every players statistics right away. In the frontend when you select a player that's when it makes an API call to the NBA API and if it's not in my Database we take the players statistics and put them in the database.
+        //If the player is in the immediate database then just show his information and don't make the NBA API call. This way we won't run into the problem of querying too much since there is a limit.
+
     }
 }
