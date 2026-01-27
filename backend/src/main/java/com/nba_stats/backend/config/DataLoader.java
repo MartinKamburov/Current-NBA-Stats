@@ -1,5 +1,7 @@
 package com.nba_stats.backend.config;
 
+import com.nba_stats.backend.player.PlayerResponseWrapper;
+import com.nba_stats.backend.teams.TeamDTO;
 import com.nba_stats.backend.teams.TeamModel;
 import com.nba_stats.backend.teams.TeamRepository;
 import com.nba_stats.backend.teams.TeamResponseWrapper;
@@ -47,19 +49,39 @@ public class DataLoader implements CommandLineRunner {
 
         ModelMapper modelMapper = new ModelMapper();
 
-        if (allTeams != null && allTeams.getResponse() != null) {
-            List<TeamModel> listOfTeams =  allTeams.getResponse().stream()
-                    .map(dto -> modelMapper.map(dto, TeamModel.class))
-                    .toList();
+//        if (allTeams != null && allTeams.getResponse() != null) {
+//            List<TeamModel> listOfTeams =  allTeams.getResponse().stream()
+//                    .map(dto -> modelMapper.map(dto, TeamModel.class))
+//                    .toList();
+//
+//            teamRepository.saveAll(listOfTeams);
+//        }
 
-            teamRepository.saveAll(listOfTeams);
+        for (TeamDTO team: allTeams.getResponse()){
+            TeamModel teamModel = modelMapper.map(team, TeamModel.class);
+
+            System.out.println("Team ID: " + teamModel.getId());
+
+            PlayerResponseWrapper players =  restClient.get()
+                    .uri("/teams?league=")
+                    .header("x-apisports-key", NBA_API_KEY) // Note: This API uses custom headers, not Basic Auth
+                    .retrieve()
+                    .body(PlayerResponseWrapper.class);
+
+            if (allTeams != null && allTeams.getResponse() != null) {
+                List<TeamModel> listOfTeams =  allTeams.getResponse().stream()
+                        .map(dto -> modelMapper.map(dto, TeamModel.class))
+                        .toList();
+
+                teamRepository.saveAll(listOfTeams);
+            }
+
         }
-
-
 
 
         //I need to grab all the nba teams and in the players get request, so I would swap out the team id for each team, and only include ones that are in the nba.
         //I would then map all the players information into the players table. Finally, after that I can grab each player's statistics and input them into the database. *Remember I can only take 100 queries per day*
+
 
         //Instead of loading every players statistics right away. In the frontend when you select a player that's when it makes an API call to the NBA API and if it's not in my Database we take the players statistics and put them in the database.
         //If the player is in the immediate database then just show his information and don't make the NBA API call. This way we won't run into the problem of querying too much since there is a limit.

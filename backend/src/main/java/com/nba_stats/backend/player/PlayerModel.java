@@ -1,5 +1,6 @@
 package com.nba_stats.backend.player;
 
+import com.nba_stats.backend.player.dtos.*;
 import com.nba_stats.backend.teams.TeamModel;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,28 +14,32 @@ import lombok.Setter;
 @Table(name="players")
 public class PlayerModel {
 
-    @Id //This annotation is what tells spring that it's the primary key
-    @Column (name="id")
+    @Id
+    @Column(name = "id")
     private int id;
 
-    @Column (name="name")
-    private String name;
+    @Column(name = "firstname")
+    private String firstname;
 
-    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
-    private PlayerStatsModel stats;
+    @Column(name = "lastname")
+    private String lastname;
 
-    @ManyToOne
-    @JoinColumn(name = "team")
-    private TeamModel team;
+    // This is the nested json structure
+    @Column(name = "birthdate")
+    private String birthdate;
 
-    @Column (name = "season")
-    private int season;
+    @Column(name = "nba")
+    private String nbastart;
 
-    @Column (name = "country")
-    private String country;
+    private HeightDTO height;
 
-    @Column (name = "search")
-    private String search;
+    private WeightDTO weight;
+
+    private String college;
+
+    private String affiliation;
+
+    private LeaguesDTO leagues;
 
 
 }
